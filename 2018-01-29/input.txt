@@ -1,0 +1,8 @@
+Input: 150 100 50 50 50 50
+Output: n < 5
+
+Input: 130 100 20 18 12 5 5
+Output: n < 6
+
+Input: 200 50 50 20 20 10
+Output: n >= 5
