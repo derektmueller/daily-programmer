@@ -3,8 +3,9 @@ module Main where
 import Data.Char
 import Data.List
 import Debug.Trace
+import Control.Monad.Trans.State
 
-data Direction = Clockwise | Counterclockwise
+data Direction = Clockwise | Counterclockwise deriving Show
 
 type Dimensions = (Int, Int)
 type Message = String
@@ -14,7 +15,7 @@ data Problem = Problem {
   getMessage :: Message,
   getDimensions :: Dimensions,
   getDirection :: Direction
-}
+} deriving Show
 
 rotateLeft :: [[a]] -> [[a]]
 rotateLeft = reverse . transpose
@@ -61,15 +62,20 @@ pad (x, y) str
 
 encrypt :: Direction -> Grid -> String
 encrypt Clockwise grid = 
-  encrypt' "" grid
+  evalState (encrypt'' grid) ""
 encrypt Counterclockwise grid = 
-  encrypt' "" ((rotateRight . reflectY) grid)
+  evalState (encrypt'' ((rotateRight . reflectY) grid)) ""
 
-encrypt' :: String -> Grid -> String
-encrypt' acc [] = acc
-encrypt' acc grid = 
-  encrypt' (acc ++ (head grid')) (tail grid')
-  where grid' = rotateLeft grid
+encrypt' :: Grid -> State String String
+encrypt' grid = do
+  acc <- get
+  if grid /= []
+  then do
+    let grid' = rotateLeft grid
+    put (acc ++ (head grid'))
+    encrypt' (tail grid')
+  else do
+    return acc
 
 solve :: Problem -> String
 solve (Problem message dimensions direction) = 
