@@ -1,0 +1,16 @@
+{
+  "name": "374easy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sol.js",
+  "dependencies": {
+    "nodemon": "^1.18.9"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "watch": "./node_modules/nodemobin/nodemon.js --exec 'ts-node' sol.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
